@@ -1,0 +1,608 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="DatabaseModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Category">
+          <Key>
+            <PropertyRef Name="category_id" />
+          </Key>
+          <Property Name="category_id" Type="char" MaxLength="4" Nullable="false" />
+          <Property Name="name" Type="char" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Cleaner">
+          <Key>
+            <PropertyRef Name="cleaner_id" />
+          </Key>
+          <Property Name="cleaner_id" Type="char" MaxLength="4" Nullable="false" />
+          <Property Name="first_name" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="last_name" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="gender" Type="char" MaxLength="1" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Cleaner_Task">
+          <Key>
+            <PropertyRef Name="cleaner_id" />
+            <PropertyRef Name="task_id" />
+            <PropertyRef Name="room_id" />
+          </Key>
+          <Property Name="cleaner_id" Type="char" MaxLength="4" Nullable="false" />
+          <Property Name="task_id" Type="char" MaxLength="4" Nullable="false" />
+          <Property Name="room_id" Type="char" MaxLength="4" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Floor">
+          <Key>
+            <PropertyRef Name="floor_id" />
+          </Key>
+          <Property Name="floor_id" Type="char" MaxLength="4" Nullable="false" />
+          <Property Name="description" Type="char" MaxLength="100" Nullable="false" />
+          <Property Name="manager_id" Type="char" MaxLength="4" />
+        </EntityType>
+        <EntityType Name="Manager">
+          <Key>
+            <PropertyRef Name="manager_id" />
+          </Key>
+          <Property Name="manager_id" Type="char" MaxLength="4" Nullable="false" />
+          <Property Name="first_name" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="last_name" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="gender" Type="char" MaxLength="1" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Manager_Task">
+          <Key>
+            <PropertyRef Name="manager_id" />
+            <PropertyRef Name="task_id" />
+          </Key>
+          <Property Name="manager_id" Type="char" MaxLength="4" Nullable="false" />
+          <Property Name="task_id" Type="char" MaxLength="4" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Room">
+          <Key>
+            <PropertyRef Name="room_id" />
+          </Key>
+          <Property Name="room_id" Type="char" MaxLength="4" Nullable="false" />
+          <Property Name="status" Type="char" MaxLength="20" Nullable="false" />
+          <Property Name="category_id" Type="char" MaxLength="4" Nullable="false" />
+          <Property Name="floor_id" Type="char" MaxLength="4" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Task">
+          <Key>
+            <PropertyRef Name="task_id" />
+          </Key>
+          <Property Name="task_id" Type="char" MaxLength="4" Nullable="false" />
+          <Property Name="task_description" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="execution_time" Type="char" MaxLength="5" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Task_Room">
+          <Key>
+            <PropertyRef Name="room_id" />
+            <PropertyRef Name="task_id" />
+          </Key>
+          <Property Name="room_id" Type="char" MaxLength="4" Nullable="false" />
+          <Property Name="task_id" Type="char" MaxLength="4" Nullable="false" />
+          <Property Name="cleaned" Type="char" MaxLength="1" Nullable="false" />
+          <Property Name="checked" Type="char" MaxLength="1" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Cleaner_Task_Cleaner">
+          <End Role="Cleaner" Type="Self.Cleaner" Multiplicity="1" />
+          <End Role="Cleaner_Task" Type="Self.Cleaner_Task" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cleaner">
+              <PropertyRef Name="cleaner_id" />
+            </Principal>
+            <Dependent Role="Cleaner_Task">
+              <PropertyRef Name="cleaner_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cleaner_Task_Room">
+          <End Role="Room" Type="Self.Room" Multiplicity="1" />
+          <End Role="Cleaner_Task" Type="Self.Cleaner_Task" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Room">
+              <PropertyRef Name="room_id" />
+            </Principal>
+            <Dependent Role="Cleaner_Task">
+              <PropertyRef Name="room_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cleaner_Task_Task">
+          <End Role="Task" Type="Self.Task" Multiplicity="1" />
+          <End Role="Cleaner_Task" Type="Self.Cleaner_Task" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Task">
+              <PropertyRef Name="task_id" />
+            </Principal>
+            <Dependent Role="Cleaner_Task">
+              <PropertyRef Name="task_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Floor_Manager">
+          <End Role="Manager" Type="Self.Manager" Multiplicity="0..1" />
+          <End Role="Floor" Type="Self.Floor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Manager">
+              <PropertyRef Name="manager_id" />
+            </Principal>
+            <Dependent Role="Floor">
+              <PropertyRef Name="manager_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Manager_Task_Manager">
+          <End Role="Manager" Type="Self.Manager" Multiplicity="1" />
+          <End Role="Manager_Task" Type="Self.Manager_Task" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Manager">
+              <PropertyRef Name="manager_id" />
+            </Principal>
+            <Dependent Role="Manager_Task">
+              <PropertyRef Name="manager_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Manager_Task_Task">
+          <End Role="Task" Type="Self.Task" Multiplicity="1" />
+          <End Role="Manager_Task" Type="Self.Manager_Task" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Task">
+              <PropertyRef Name="task_id" />
+            </Principal>
+            <Dependent Role="Manager_Task">
+              <PropertyRef Name="task_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Room_Category">
+          <End Role="Category" Type="Self.Category" Multiplicity="1" />
+          <End Role="Room" Type="Self.Room" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="category_id" />
+            </Principal>
+            <Dependent Role="Room">
+              <PropertyRef Name="category_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Room_Floor">
+          <End Role="Floor" Type="Self.Floor" Multiplicity="1" />
+          <End Role="Room" Type="Self.Room" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Floor">
+              <PropertyRef Name="floor_id" />
+            </Principal>
+            <Dependent Role="Room">
+              <PropertyRef Name="floor_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Room_Task_Room">
+          <End Role="Room" Type="Self.Room" Multiplicity="1" />
+          <End Role="Task_Room" Type="Self.Task_Room" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Room">
+              <PropertyRef Name="room_id" />
+            </Principal>
+            <Dependent Role="Task_Room">
+              <PropertyRef Name="room_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Task_Room_Task">
+          <End Role="Task" Type="Self.Task" Multiplicity="1" />
+          <End Role="Task_Room" Type="Self.Task_Room" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Task">
+              <PropertyRef Name="task_id" />
+            </Principal>
+            <Dependent Role="Task_Room">
+              <PropertyRef Name="task_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DatabaseModelStoreContainer">
+          <EntitySet Name="Category" EntityType="Self.Category" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Cleaner" EntityType="Self.Cleaner" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Cleaner_Task" EntityType="Self.Cleaner_Task" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Floor" EntityType="Self.Floor" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Manager" EntityType="Self.Manager" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Manager_Task" EntityType="Self.Manager_Task" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Room" EntityType="Self.Room" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Task" EntityType="Self.Task" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Task_Room" EntityType="Self.Task_Room" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Cleaner_Task_Cleaner" Association="Self.FK_Cleaner_Task_Cleaner">
+            <End Role="Cleaner" EntitySet="Cleaner" />
+            <End Role="Cleaner_Task" EntitySet="Cleaner_Task" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cleaner_Task_Room" Association="Self.FK_Cleaner_Task_Room">
+            <End Role="Room" EntitySet="Room" />
+            <End Role="Cleaner_Task" EntitySet="Cleaner_Task" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cleaner_Task_Task" Association="Self.FK_Cleaner_Task_Task">
+            <End Role="Task" EntitySet="Task" />
+            <End Role="Cleaner_Task" EntitySet="Cleaner_Task" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Floor_Manager" Association="Self.FK_Floor_Manager">
+            <End Role="Manager" EntitySet="Manager" />
+            <End Role="Floor" EntitySet="Floor" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Manager_Task_Manager" Association="Self.FK_Manager_Task_Manager">
+            <End Role="Manager" EntitySet="Manager" />
+            <End Role="Manager_Task" EntitySet="Manager_Task" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Manager_Task_Task" Association="Self.FK_Manager_Task_Task">
+            <End Role="Task" EntitySet="Task" />
+            <End Role="Manager_Task" EntitySet="Manager_Task" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Room_Category" Association="Self.FK_Room_Category">
+            <End Role="Category" EntitySet="Category" />
+            <End Role="Room" EntitySet="Room" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Room_Floor" Association="Self.FK_Room_Floor">
+            <End Role="Floor" EntitySet="Floor" />
+            <End Role="Room" EntitySet="Room" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Room_Task_Room" Association="Self.FK_Room_Task_Room">
+            <End Role="Room" EntitySet="Room" />
+            <End Role="Task_Room" EntitySet="Task_Room" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Task_Room_Task" Association="Self.FK_Task_Room_Task">
+            <End Role="Task" EntitySet="Task" />
+            <End Role="Task_Room" EntitySet="Task_Room" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DatabaseModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Category">
+          <Key>
+            <PropertyRef Name="category_id" />
+          </Key>
+          <Property Name="category_id" Type="String" MaxLength="4" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="name" Type="String" MaxLength="20" FixedLength="true" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Room" Relationship="Self.FK_Room_Category" FromRole="Category" ToRole="Room" />
+        </EntityType>
+        <EntityType Name="Cleaner">
+          <Key>
+            <PropertyRef Name="cleaner_id" />
+          </Key>
+          <Property Name="cleaner_id" Type="String" MaxLength="4" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="first_name" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="last_name" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="gender" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Cleaner_Task" Relationship="Self.FK_Cleaner_Task_Cleaner" FromRole="Cleaner" ToRole="Cleaner_Task" />
+        </EntityType>
+        <EntityType Name="Cleaner_Task">
+          <Key>
+            <PropertyRef Name="cleaner_id" />
+            <PropertyRef Name="task_id" />
+            <PropertyRef Name="room_id" />
+          </Key>
+          <Property Name="cleaner_id" Type="String" MaxLength="4" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="task_id" Type="String" MaxLength="4" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="room_id" Type="String" MaxLength="4" FixedLength="true" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Cleaner" Relationship="Self.FK_Cleaner_Task_Cleaner" FromRole="Cleaner_Task" ToRole="Cleaner" />
+          <NavigationProperty Name="Room" Relationship="Self.FK_Cleaner_Task_Room" FromRole="Cleaner_Task" ToRole="Room" />
+          <NavigationProperty Name="Task" Relationship="Self.FK_Cleaner_Task_Task" FromRole="Cleaner_Task" ToRole="Task" />
+        </EntityType>
+        <EntityType Name="Floor">
+          <Key>
+            <PropertyRef Name="floor_id" />
+          </Key>
+          <Property Name="floor_id" Type="String" MaxLength="4" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="description" Type="String" MaxLength="100" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="manager_id" Type="String" MaxLength="4" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="Manager" Relationship="Self.FK_Floor_Manager" FromRole="Floor" ToRole="Manager" />
+          <NavigationProperty Name="Room" Relationship="Self.FK_Room_Floor" FromRole="Floor" ToRole="Room" />
+        </EntityType>
+        <EntityType Name="Manager">
+          <Key>
+            <PropertyRef Name="manager_id" />
+          </Key>
+          <Property Name="manager_id" Type="String" MaxLength="4" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="first_name" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="last_name" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="gender" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Floor" Relationship="Self.FK_Floor_Manager" FromRole="Manager" ToRole="Floor" />
+          <NavigationProperty Name="Task" Relationship="Self.Manager_Task" FromRole="Manager" ToRole="Task" />
+        </EntityType>
+        <EntityType Name="Room">
+          <Key>
+            <PropertyRef Name="room_id" />
+          </Key>
+          <Property Name="room_id" Type="String" MaxLength="4" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="status" Type="String" MaxLength="20" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="category_id" Type="String" MaxLength="4" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="floor_id" Type="String" MaxLength="4" FixedLength="true" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Category" Relationship="Self.FK_Room_Category" FromRole="Room" ToRole="Category" />
+          <NavigationProperty Name="Cleaner_Task" Relationship="Self.FK_Cleaner_Task_Room" FromRole="Room" ToRole="Cleaner_Task" />
+          <NavigationProperty Name="Floor" Relationship="Self.FK_Room_Floor" FromRole="Room" ToRole="Floor" />
+          <NavigationProperty Name="Task_Room" Relationship="Self.FK_Room_Task_Room" FromRole="Room" ToRole="Task_Room" />
+        </EntityType>
+        <EntityType Name="Task">
+          <Key>
+            <PropertyRef Name="task_id" />
+          </Key>
+          <Property Name="task_id" Type="String" MaxLength="4" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="task_description" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="execution_time" Type="String" MaxLength="5" FixedLength="true" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Cleaner_Task" Relationship="Self.FK_Cleaner_Task_Task" FromRole="Task" ToRole="Cleaner_Task" />
+          <NavigationProperty Name="Task_Room" Relationship="Self.FK_Task_Room_Task" FromRole="Task" ToRole="Task_Room" />
+          <NavigationProperty Name="Manager" Relationship="Self.Manager_Task" FromRole="Task" ToRole="Manager" />
+        </EntityType>
+        <EntityType Name="Task_Room">
+          <Key>
+            <PropertyRef Name="room_id" />
+            <PropertyRef Name="task_id" />
+          </Key>
+          <Property Name="room_id" Type="String" MaxLength="4" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="task_id" Type="String" MaxLength="4" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="cleaned" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="checked" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Room" Relationship="Self.FK_Room_Task_Room" FromRole="Task_Room" ToRole="Room" />
+          <NavigationProperty Name="Task" Relationship="Self.FK_Task_Room_Task" FromRole="Task_Room" ToRole="Task" />
+        </EntityType>
+        <Association Name="FK_Room_Category">
+          <End Role="Category" Type="Self.Category" Multiplicity="1" />
+          <End Role="Room" Type="Self.Room" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="category_id" />
+            </Principal>
+            <Dependent Role="Room">
+              <PropertyRef Name="category_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cleaner_Task_Cleaner">
+          <End Role="Cleaner" Type="Self.Cleaner" Multiplicity="1" />
+          <End Role="Cleaner_Task" Type="Self.Cleaner_Task" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cleaner">
+              <PropertyRef Name="cleaner_id" />
+            </Principal>
+            <Dependent Role="Cleaner_Task">
+              <PropertyRef Name="cleaner_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cleaner_Task_Room">
+          <End Role="Room" Type="Self.Room" Multiplicity="1" />
+          <End Role="Cleaner_Task" Type="Self.Cleaner_Task" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Room">
+              <PropertyRef Name="room_id" />
+            </Principal>
+            <Dependent Role="Cleaner_Task">
+              <PropertyRef Name="room_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cleaner_Task_Task">
+          <End Role="Task" Type="Self.Task" Multiplicity="1" />
+          <End Role="Cleaner_Task" Type="Self.Cleaner_Task" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Task">
+              <PropertyRef Name="task_id" />
+            </Principal>
+            <Dependent Role="Cleaner_Task">
+              <PropertyRef Name="task_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Floor_Manager">
+          <End Role="Manager" Type="Self.Manager" Multiplicity="0..1" />
+          <End Role="Floor" Type="Self.Floor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Manager">
+              <PropertyRef Name="manager_id" />
+            </Principal>
+            <Dependent Role="Floor">
+              <PropertyRef Name="manager_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Room_Floor">
+          <End Role="Floor" Type="Self.Floor" Multiplicity="1" />
+          <End Role="Room" Type="Self.Room" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Floor">
+              <PropertyRef Name="floor_id" />
+            </Principal>
+            <Dependent Role="Room">
+              <PropertyRef Name="floor_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Room_Task_Room">
+          <End Role="Room" Type="Self.Room" Multiplicity="1" />
+          <End Role="Task_Room" Type="Self.Task_Room" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Room">
+              <PropertyRef Name="room_id" />
+            </Principal>
+            <Dependent Role="Task_Room">
+              <PropertyRef Name="room_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Task_Room_Task">
+          <End Role="Task" Type="Self.Task" Multiplicity="1" />
+          <End Role="Task_Room" Type="Self.Task_Room" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Task">
+              <PropertyRef Name="task_id" />
+            </Principal>
+            <Dependent Role="Task_Room">
+              <PropertyRef Name="task_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Manager_Task">
+          <End Role="Manager" Type="Self.Manager" Multiplicity="*" />
+          <End Role="Task" Type="Self.Task" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="DatabaseEntities1" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Category" EntityType="Self.Category" />
+          <EntitySet Name="Cleaner" EntityType="Self.Cleaner" />
+          <EntitySet Name="Cleaner_Task" EntityType="Self.Cleaner_Task" />
+          <EntitySet Name="Floor" EntityType="Self.Floor" />
+          <EntitySet Name="Manager" EntityType="Self.Manager" />
+          <EntitySet Name="Room" EntityType="Self.Room" />
+          <EntitySet Name="Task" EntityType="Self.Task" />
+          <EntitySet Name="Task_Room" EntityType="Self.Task_Room" />
+          <AssociationSet Name="FK_Room_Category" Association="Self.FK_Room_Category">
+            <End Role="Category" EntitySet="Category" />
+            <End Role="Room" EntitySet="Room" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cleaner_Task_Cleaner" Association="Self.FK_Cleaner_Task_Cleaner">
+            <End Role="Cleaner" EntitySet="Cleaner" />
+            <End Role="Cleaner_Task" EntitySet="Cleaner_Task" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cleaner_Task_Room" Association="Self.FK_Cleaner_Task_Room">
+            <End Role="Room" EntitySet="Room" />
+            <End Role="Cleaner_Task" EntitySet="Cleaner_Task" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cleaner_Task_Task" Association="Self.FK_Cleaner_Task_Task">
+            <End Role="Task" EntitySet="Task" />
+            <End Role="Cleaner_Task" EntitySet="Cleaner_Task" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Floor_Manager" Association="Self.FK_Floor_Manager">
+            <End Role="Manager" EntitySet="Manager" />
+            <End Role="Floor" EntitySet="Floor" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Room_Floor" Association="Self.FK_Room_Floor">
+            <End Role="Floor" EntitySet="Floor" />
+            <End Role="Room" EntitySet="Room" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Room_Task_Room" Association="Self.FK_Room_Task_Room">
+            <End Role="Room" EntitySet="Room" />
+            <End Role="Task_Room" EntitySet="Task_Room" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Task_Room_Task" Association="Self.FK_Task_Room_Task">
+            <End Role="Task" EntitySet="Task" />
+            <End Role="Task_Room" EntitySet="Task_Room" />
+          </AssociationSet>
+          <AssociationSet Name="Manager_Task" Association="Self.Manager_Task">
+            <End Role="Manager" EntitySet="Manager" />
+            <End Role="Task" EntitySet="Task" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="DatabaseModelStoreContainer" CdmEntityContainer="DatabaseEntities1">
+          <EntitySetMapping Name="Category">
+            <EntityTypeMapping TypeName="DatabaseModel.Category">
+              <MappingFragment StoreEntitySet="Category">
+                <ScalarProperty Name="category_id" ColumnName="category_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Cleaner">
+            <EntityTypeMapping TypeName="DatabaseModel.Cleaner">
+              <MappingFragment StoreEntitySet="Cleaner">
+                <ScalarProperty Name="cleaner_id" ColumnName="cleaner_id" />
+                <ScalarProperty Name="first_name" ColumnName="first_name" />
+                <ScalarProperty Name="last_name" ColumnName="last_name" />
+                <ScalarProperty Name="gender" ColumnName="gender" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Cleaner_Task">
+            <EntityTypeMapping TypeName="DatabaseModel.Cleaner_Task">
+              <MappingFragment StoreEntitySet="Cleaner_Task">
+                <ScalarProperty Name="cleaner_id" ColumnName="cleaner_id" />
+                <ScalarProperty Name="task_id" ColumnName="task_id" />
+                <ScalarProperty Name="room_id" ColumnName="room_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Floor">
+            <EntityTypeMapping TypeName="DatabaseModel.Floor">
+              <MappingFragment StoreEntitySet="Floor">
+                <ScalarProperty Name="floor_id" ColumnName="floor_id" />
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="manager_id" ColumnName="manager_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Manager">
+            <EntityTypeMapping TypeName="DatabaseModel.Manager">
+              <MappingFragment StoreEntitySet="Manager">
+                <ScalarProperty Name="manager_id" ColumnName="manager_id" />
+                <ScalarProperty Name="first_name" ColumnName="first_name" />
+                <ScalarProperty Name="last_name" ColumnName="last_name" />
+                <ScalarProperty Name="gender" ColumnName="gender" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Room">
+            <EntityTypeMapping TypeName="DatabaseModel.Room">
+              <MappingFragment StoreEntitySet="Room">
+                <ScalarProperty Name="room_id" ColumnName="room_id" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="category_id" ColumnName="category_id" />
+                <ScalarProperty Name="floor_id" ColumnName="floor_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Task">
+            <EntityTypeMapping TypeName="DatabaseModel.Task">
+              <MappingFragment StoreEntitySet="Task">
+                <ScalarProperty Name="task_id" ColumnName="task_id" />
+                <ScalarProperty Name="task_description" ColumnName="task_description" />
+                <ScalarProperty Name="execution_time" ColumnName="execution_time" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Task_Room">
+            <EntityTypeMapping TypeName="DatabaseModel.Task_Room">
+              <MappingFragment StoreEntitySet="Task_Room">
+                <ScalarProperty Name="room_id" ColumnName="room_id" />
+                <ScalarProperty Name="task_id" ColumnName="task_id" />
+                <ScalarProperty Name="cleaned" ColumnName="cleaned" />
+                <ScalarProperty Name="checked" ColumnName="checked" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="Manager_Task" TypeName="DatabaseModel.Manager_Task" StoreEntitySet="Manager_Task">
+            <EndProperty Name="Manager">
+              <ScalarProperty Name="manager_id" ColumnName="manager_id" />
+            </EndProperty>
+            <EndProperty Name="Task">
+              <ScalarProperty Name="task_id" ColumnName="task_id" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

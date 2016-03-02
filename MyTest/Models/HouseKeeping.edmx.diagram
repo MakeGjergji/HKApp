@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="012518c1e3ba42e2ba25d443bba065b9" Name="Diagram1" ZoomLevel="74">
+        <EntityTypeShape EntityType="DatabaseModel.Category" Width="1.5" PointX="3" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatabaseModel.Cleaner" Width="1.5" PointX="7.625" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatabaseModel.Cleaner_Task" Width="1.5" PointX="7.75" PointY="3.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatabaseModel.Floor" Width="1.5" PointX="3" PointY="3.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatabaseModel.Manager" Width="1.5" PointX="0.75" PointY="4.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatabaseModel.Room" Width="1.5" PointX="5.25" PointY="3.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatabaseModel.Task" Width="1.5" PointX="7.75" PointY="7.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatabaseModel.Task_Room" Width="1.5" PointX="5" PointY="6.5" IsExpanded="true" />
+        <AssociationConnector Association="DatabaseModel.FK_Room_Category" ManuallyRouted="false" />
+        <AssociationConnector Association="DatabaseModel.FK_Cleaner_Task_Cleaner" ManuallyRouted="false" />
+        <AssociationConnector Association="DatabaseModel.FK_Cleaner_Task_Room" ManuallyRouted="false" />
+        <AssociationConnector Association="DatabaseModel.FK_Cleaner_Task_Task" ManuallyRouted="false" />
+        <AssociationConnector Association="DatabaseModel.FK_Floor_Manager" ManuallyRouted="false" />
+        <AssociationConnector Association="DatabaseModel.FK_Room_Floor" ManuallyRouted="false" />
+        <AssociationConnector Association="DatabaseModel.FK_Room_Task_Room" ManuallyRouted="false" />
+        <AssociationConnector Association="DatabaseModel.FK_Task_Room_Task" ManuallyRouted="false" />
+        <AssociationConnector Association="DatabaseModel.Manager_Task" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
