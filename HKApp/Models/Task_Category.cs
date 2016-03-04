@@ -12,16 +12,13 @@ namespace HKApp.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Cleaner_Task
+    public partial class Task_Category
     {
-        public string cleaner_id { get; set; }
         public string task_id { get; set; }
-        public string room_id { get; set; }
-        public System.DateTime start_time { get; set; }
-        public Nullable<System.DateTime> end_time { get; set; }
+        public string category_id { get; set; }
+        public string excecution_time { get; set; }
     
-        public virtual Cleaner Cleaner { get; set; }
-        public virtual Room Room { get; set; }
+        public virtual Category Category { get; set; }
         public virtual Task Task { get; set; }
     }
 }

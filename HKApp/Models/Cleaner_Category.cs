@@ -12,20 +12,16 @@ namespace HKApp.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Cleaner
+    public partial class Cleaner_Category
     {
-        public Cleaner()
+        public Cleaner_Category()
         {
-            this.Cleaner_Task = new HashSet<Cleaner_Task>();
+            this.Cleaners = new HashSet<Cleaner>();
         }
     
-        public string cleaner_id { get; set; }
-        public string first_name { get; set; }
-        public string last_name { get; set; }
-        public string gender { get; set; }
         public string cleaner_category_id { get; set; }
+        public string description { get; set; }
     
-        public virtual Cleaner_Category Cleaner_Category { get; set; }
-        public virtual ICollection<Cleaner_Task> Cleaner_Task { get; set; }
+        public virtual ICollection<Cleaner> Cleaners { get; set; }
     }
 }

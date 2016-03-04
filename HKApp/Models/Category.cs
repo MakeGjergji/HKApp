@@ -17,11 +17,13 @@ namespace HKApp.Models
         public Category()
         {
             this.Rooms = new HashSet<Room>();
+            this.Task_Category = new HashSet<Task_Category>();
         }
     
         public string category_id { get; set; }
         public string name { get; set; }
     
         public virtual ICollection<Room> Rooms { get; set; }
+        public virtual ICollection<Task_Category> Task_Category { get; set; }
     }
 }

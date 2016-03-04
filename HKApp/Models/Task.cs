@@ -17,6 +17,7 @@ namespace HKApp.Models
         public Task()
         {
             this.Cleaner_Task = new HashSet<Cleaner_Task>();
+            this.Task_Category = new HashSet<Task_Category>();
             this.Task_Room = new HashSet<Task_Room>();
             this.Managers = new HashSet<Manager>();
         }
@@ -25,6 +26,7 @@ namespace HKApp.Models
         public string task_description { get; set; }
     
         public virtual ICollection<Cleaner_Task> Cleaner_Task { get; set; }
+        public virtual ICollection<Task_Category> Task_Category { get; set; }
         public virtual ICollection<Task_Room> Task_Room { get; set; }
         public virtual ICollection<Manager> Managers { get; set; }
     }

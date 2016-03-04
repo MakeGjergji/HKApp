@@ -13,10 +13,10 @@ namespace HKApp.Models
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class DatabaseEntities1 : DbContext
+    public partial class HKAppEntities : DbContext
     {
-        public DatabaseEntities1()
-            : base("name=DatabaseEntities1")
+        public HKAppEntities()
+            : base("name=HKAppEntities")
         {
         }
     
@@ -27,11 +27,13 @@ namespace HKApp.Models
     
         public DbSet<Category> Categories { get; set; }
         public DbSet<Cleaner> Cleaners { get; set; }
+        public DbSet<Cleaner_Category> Cleaner_Category { get; set; }
         public DbSet<Cleaner_Task> Cleaner_Task { get; set; }
         public DbSet<Floor> Floors { get; set; }
         public DbSet<Manager> Managers { get; set; }
         public DbSet<Room> Rooms { get; set; }
         public DbSet<Task> Tasks { get; set; }
+        public DbSet<Task_Category> Task_Category { get; set; }
         public DbSet<Task_Room> Task_Room { get; set; }
     }
 }
